@@ -411,7 +411,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c30caab759a7e8c4ca4b4fa1764d5f72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wayPoints:
+  wayPoints0:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  wayPoints1:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -455,7 +476,6 @@ GameObject:
   - component: {fileID: 2235683380046766366}
   - component: {fileID: 2235683380046766338}
   - component: {fileID: 2235683380046766339}
-  - component: {fileID: 2235683380046766337}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -497,7 +517,7 @@ Camera:
   m_FocalLength: 50
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.5
+    x: 0
     y: 0
     width: 0.5
     height: 0.5
@@ -523,14 +543,6 @@ Camera:
   m_StereoSeparation: 0.022
 --- !u!124 &2235683380046766339
 Behaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2235683380046766367}
-  m_Enabled: 1
---- !u!81 &2235683380046766337
-AudioListener:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}

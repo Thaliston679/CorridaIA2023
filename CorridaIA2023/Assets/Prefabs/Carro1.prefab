@@ -234,7 +234,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c30caab759a7e8c4ca4b4fa1764d5f72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wayPoints:
+  wayPoints0:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  wayPoints1:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
