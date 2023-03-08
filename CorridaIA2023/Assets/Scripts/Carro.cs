@@ -8,6 +8,7 @@ public class Carro : MonoBehaviour
 
     public GameObject[] wayPoints0;
     public GameObject[] wayPoints1;
+    int waypointCount = 0;
     public int destiny = 0;
     public int lap = 0;
     public int maxLap = 3;
@@ -42,6 +43,7 @@ public class Carro : MonoBehaviour
                 RandomizeCarPerformance(destiny);
 
                 destiny++;
+                waypointCount++;
                 if (destiny > wayPoints0.Length - 1)
                 {
                     destiny = 0;
@@ -63,6 +65,7 @@ public class Carro : MonoBehaviour
                 RandomizeCarPerformance(destiny);
 
                 destiny++;
+                waypointCount++;
                 if (destiny > wayPoints1.Length - 1)
                 {
                     destiny = 0;
