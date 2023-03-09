@@ -2,11 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.Events;
 
 public class UIControl : MonoBehaviour
 {
     public GameObject[] carros;
     public TextMeshProUGUI placar;
+    public UnityEvent play;
+    int contagem = 0;
+    public TextMeshProUGUI contagemTxt;
+    public bool[] finish;
 
     // Classe para armazenar as informações de cada jogador
     private class Jogador
@@ -53,11 +58,34 @@ public class UIControl : MonoBehaviour
 
         for (int i = 0; i < jogadores.Count; i++)
         {
-            txt += (i + 1) + "º Lugar: " + jogadores[i].nome + "\n";
-            jogadores[i].car.SetRanking(i + 1);
+            if (jogadores[i].car.GetFinish() && !finish[i])
+            {
+                finish[i] = true;
+                txt += jogadores[i].nome + "\n" + (i + 1) + "º Lugar: ";
+            }
+            if (!jogadores[i].car.GetFinish())
+            {
+                txt += (i + 1) + "º Lugar: " + jogadores[i].nome + "\n";
+                jogadores[i].car.SetRanking(i + 1);
+            }
         }
 
         placar.text = txt;
+    }
+
+    public void PlayStart()
+    {
+        play.Invoke();
+    }
+
+    public void Contagem()
+    {
+        if (contagem == 0) contagemTxt.text = "3";
+        if (contagem == 1) contagemTxt.text = "2";
+        if (contagem == 2) contagemTxt.text = "1";
+        if (contagem == 3) contagemTxt.text = "GO!!!";
+
+        contagem++;
     }
 
     /*private int DesempatarPorDistancia(Jogador j1, Jogador j2)

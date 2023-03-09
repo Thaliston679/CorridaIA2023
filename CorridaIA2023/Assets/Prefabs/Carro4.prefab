@@ -194,7 +194,7 @@ Transform:
   m_GameObject: {fileID: 1741406880}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 25, z: 0}
-  m_LocalScale: {x: 10, y: 20.000002, z: 5}
+  m_LocalScale: {x: 15, y: 30.000004, z: 7.5}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 2235683380033393715}
@@ -445,6 +445,7 @@ MonoBehaviour:
   destiny: 0
   lap: 0
   maxLap: 3
+  ranking: 0
   wheels:
   - {fileID: 364184627}
   - {fileID: 661146097}

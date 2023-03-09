@@ -5,6 +5,7 @@ using TMPro;
 public class Carro : MonoBehaviour
 {
     NavMeshAgent car;
+    public GameObject carObj;
 
     public GameObject[] wayPoints0;
     public GameObject[] wayPoints1;
@@ -20,15 +21,21 @@ public class Carro : MonoBehaviour
 
     public TextMeshProUGUI jpGUI;
 
+    public GameObject cam;
+    public Transform[] camPos;
+    int camID = 0;
+    bool finish = false;
+
     // Start is called before the first frame update
     void Start()
     {
         rota = Random.Range(0, 2);
-
+        cam = GetComponentInChildren<Camera>().gameObject;
+        cam.transform.localPosition = camPos[camID].position;
+        cam.transform.localRotation = camPos[camID].rotation;
         car = GetComponent<NavMeshAgent>();
 
-        if (rota == 0) car.SetDestination(wayPoints0[destiny].transform.position);
-        if (rota == 1) car.SetDestination(wayPoints1[destiny].transform.position);
+        
 
         JpGUI();
     }
@@ -36,6 +43,8 @@ public class Carro : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (lap > 3 && !finish) Chegada();
+
         if(rota == 0)
         {
             //Waypoints
@@ -94,7 +103,7 @@ public class Carro : MonoBehaviour
         {
             if (wayPoints0[i].transform.CompareTag("Lento"))
             {
-                car.speed = Random.Range(12, 20);
+                car.speed = Random.Range(15, 20);
             }
             if (wayPoints0[i].transform.CompareTag("Medio"))
             {
@@ -102,7 +111,7 @@ public class Carro : MonoBehaviour
             }
             if (wayPoints0[i].transform.CompareTag("Rapido"))
             {
-                car.speed = Random.Range(25, 40);
+                car.speed = Random.Range(25, 35);
             }
         }
 
@@ -110,7 +119,7 @@ public class Carro : MonoBehaviour
         {
             if (wayPoints1[i].transform.CompareTag("Lento"))
             {
-                car.speed = Random.Range(12, 20);
+                car.speed = Random.Range(15, 20);
             }
             if (wayPoints1[i].transform.CompareTag("Medio"))
             {
@@ -118,7 +127,7 @@ public class Carro : MonoBehaviour
             }
             if (wayPoints1[i].transform.CompareTag("Rapido"))
             {
-                car.speed = Random.Range(25, 40);
+                car.speed = Random.Range(25, 35);
             }
         }
         
@@ -149,14 +158,40 @@ public class Carro : MonoBehaviour
         if(jpGUI != null) jpGUI.text = $"Lap: {lap} / {maxLap}\n{car.speed} Km/h\n{ranking}º Lugar";
     }
 
+    public void CamSwitch()
+    {
+        camID++;
+        if (camID > camPos.Length - 1) camID = 0;
+        cam.transform.localPosition = camPos[camID].position;
+        cam.transform.localRotation = camPos[camID].rotation;
+        Debug.Log(camID);
+    }
+
     public int GetWayPointCount()
     {
         return waypointCount;
     }
 
+    public bool GetFinish()
+    {
+        return finish;
+    }
+
     public void SetRanking(int rank)
     {
         ranking = rank;
+    }
+
+    public void Largada()
+    {
+        if (rota == 0) car.SetDestination(wayPoints0[destiny].transform.position);
+        if (rota == 1) car.SetDestination(wayPoints1[destiny].transform.position);
+    }
+
+    public void Chegada()
+    {
+        finish = true;
+        carObj.SetActive(false);
     }
 
     private void OnDrawGizmos()
