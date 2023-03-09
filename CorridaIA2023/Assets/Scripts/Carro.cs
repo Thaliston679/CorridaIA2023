@@ -13,6 +13,7 @@ public class Carro : MonoBehaviour
     public int lap = 0;
     public int maxLap = 3;
     int rota = 0;
+    public int ranking;
 
     public GameObject[] wheels;
     public GameObject[] fWheels;
@@ -145,7 +146,17 @@ public class Carro : MonoBehaviour
 
     void JpGUI()
     {
-        jpGUI.text = $"Lap: {lap} / {maxLap}\n{car.speed} Km/h";
+        if(jpGUI != null) jpGUI.text = $"Lap: {lap} / {maxLap}\n{car.speed} Km/h\n{ranking}º Lugar";
+    }
+
+    public int GetWayPointCount()
+    {
+        return waypointCount;
+    }
+
+    public void SetRanking(int rank)
+    {
+        ranking = rank;
     }
 
     private void OnDrawGizmos()
