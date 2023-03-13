@@ -6,12 +6,15 @@ public class Carro : MonoBehaviour
 {
     NavMeshAgent car;
     public GameObject carObj;
+    public GameObject camObj;
+    public GameObject targetObj;
+    public float smooth;
 
     public GameObject[] wayPoints0;
     public GameObject[] wayPoints1;
     int waypointCount = 0;
     public int destiny = 0;
-    public int lap = 0;
+    public int lap = 1;
     public int maxLap = 3;
     int rota = 0;
     public int ranking;
@@ -21,21 +24,21 @@ public class Carro : MonoBehaviour
 
     public TextMeshProUGUI jpGUI;
 
-    public GameObject cam;
+    public GameObject camObjPos;
     public Transform[] camPos;
     int camID = 0;
     bool finish = false;
+
+    public float timeCar = 0;
+    public string timeCarString = "00:00:00";
 
     // Start is called before the first frame update
     void Start()
     {
         rota = Random.Range(0, 2);
-        cam = GetComponentInChildren<Camera>().gameObject;
-        cam.transform.localPosition = camPos[camID].position;
-        cam.transform.localRotation = camPos[camID].rotation;
+        camObjPos.transform.localPosition = camPos[camID].position;
+        camObjPos.transform.localRotation = camPos[camID].rotation;
         car = GetComponent<NavMeshAgent>();
-
-        
 
         JpGUI();
     }
@@ -43,6 +46,8 @@ public class Carro : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(!finish) timeCar += Time.deltaTime * 1000f;
+
         if (lap > 3 && !finish) Chegada();
 
         if(rota == 0)
@@ -50,7 +55,7 @@ public class Carro : MonoBehaviour
             //Waypoints
             if (Vector3.Distance(transform.position, wayPoints0[destiny].transform.position) < 8)
             {
-                RandomizeCarPerformance(destiny);
+                if (!finish) RandomizeCarPerformance(destiny);
 
                 destiny++;
                 waypointCount++;
@@ -72,7 +77,7 @@ public class Carro : MonoBehaviour
             //Waypoints
             if (Vector3.Distance(transform.position, wayPoints1[destiny].transform.position) < 8)
             {
-                RandomizeCarPerformance(destiny);
+                if(!finish) RandomizeCarPerformance(destiny);
 
                 destiny++;
                 waypointCount++;
@@ -93,6 +98,23 @@ public class Carro : MonoBehaviour
 
         //Rodas
         WheelsRotation();
+
+        Billboard();
+    }
+
+    void Billboard()
+    {
+        Vector3 smoothedPosition = Vector3.Lerp(camObj.transform.position, camObjPos.transform.position, smooth * Time.deltaTime);
+        camObj.transform.position = smoothedPosition;
+
+        Vector3 direction = targetObj.transform.position - camObj.transform.position;
+
+        if (direction != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            camObj.transform.rotation = Quaternion.Slerp(camObj.transform.rotation, targetRotation, Time.deltaTime * (smooth/3));
+            camObj.transform.rotation = targetRotation;
+        }
     }
 
     void RandomizeCarPerformance(int i)
@@ -149,11 +171,11 @@ public class Carro : MonoBehaviour
 
         for (int i = 0; i < wheels.Length; i++)
         {
-            wheels[i].transform.Rotate(Time.deltaTime * 200, 0, 0);
+            wheels[i].transform.Rotate(Time.deltaTime * 15 * car.speed, 0, 0);
         }
     }
 
-    void JpGUI()
+    public void JpGUI()
     {
         if(jpGUI != null) jpGUI.text = $"Lap: {lap} / {maxLap}\n{car.speed} Km/h\n{ranking}º Lugar";
     }
@@ -162,8 +184,8 @@ public class Carro : MonoBehaviour
     {
         camID++;
         if (camID > camPos.Length - 1) camID = 0;
-        cam.transform.localPosition = camPos[camID].position;
-        cam.transform.localRotation = camPos[camID].rotation;
+        camObjPos.transform.localPosition = camPos[camID].position;
+        camObjPos.transform.localRotation = camPos[camID].rotation;
         Debug.Log(camID);
     }
 
@@ -184,6 +206,7 @@ public class Carro : MonoBehaviour
 
     public void Largada()
     {
+        timeCar = 0;
         if (rota == 0) car.SetDestination(wayPoints0[destiny].transform.position);
         if (rota == 1) car.SetDestination(wayPoints1[destiny].transform.position);
     }
@@ -191,7 +214,16 @@ public class Carro : MonoBehaviour
     public void Chegada()
     {
         finish = true;
-        carObj.SetActive(false);
+        smooth = 0.5f;
+        camObjPos.transform.localPosition = camPos[3].position;
+        camObjPos.transform.localRotation = camPos[3].rotation;
+        int minutes = (int)(timeCar/60000);
+        int seconds = (int)((timeCar / 1000) % 60);
+        int mileseconds = (int)(timeCar % 1000);
+        timeCarString = string.Format("{0:00}:{1:00}:{2:000}", minutes, seconds, mileseconds);
+        car.speed = 40;
+        car.acceleration = 9999;
+        car.angularSpeed = 9999;
     }
 
     private void OnDrawGizmos()
